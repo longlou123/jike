@@ -1,7 +1,7 @@
 /*
  * @Author: dalou
  * @Date: 2021-04-20 18:49:55
- * @LastEditTime: 2021-04-25 20:13:49
+ * @LastEditTime: 2021-04-26 08:57:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /jike-study/oneWeek/serve.js
@@ -22,7 +22,7 @@ const server = http.createServer((req, res) => {
 		res.end(
 `<html maaa=a >
 <head>
-			<style>
+		<style>
 body div #myid{
 		width:100px;
 		background-color: #ff5000;
@@ -31,7 +31,7 @@ body div img{
 	width:30px;
 	background-color:#ff1111;
 }			
-			</style>
+		</style>
 </head>
 <body>
 	<div>

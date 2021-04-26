@@ -1,7 +1,7 @@
 /*
  * @Author: dalou
  * @Date: 2021-04-20 15:10:59
- * @LastEditTime: 2021-04-25 20:34:29
+ * @LastEditTime: 2021-04-26 11:05:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /jike-study/oneWeek/parser.js
@@ -11,9 +11,10 @@ const css = require('css')
 const EOF = Symbol("EOF")
 
 let currentToken = null
+
 let currentAttribute = null
 
-let stack = [{ type: "document", children: [] }]
+let stack = [{ type: "document", children: []}]
 let currentTextNode = null
 
 let rules = [];
@@ -81,23 +82,23 @@ function computeCss(element){
 
   for(let rule of rules){
     let selectorParts = rule.selectors[0].split(" ").reverse()
+
     if(!match(element, selectorParts[0])){
       continue
     }
     let j = 1
-    for(let i = 0; i< elements.length; i++){
+    for(let i = 0; i < elements.length; i++){
       if(match(elements[i], selectorParts[j])){
-        j ++
+        j++
       }
     }
     if(j >= selectorParts.length){
       matched = true
     }
-
     if(matched){
       let sp = specificity(rule.selectors[0])
       let computedStyle = element.computedStyle
-      for(let declaration of rules.declaration){
+      for(let declaration of rule.declaration){
         if(!computedStyle[declaration.property]){
           computedStyle[declaration.property] = {}
         }
@@ -133,7 +134,6 @@ function emit(token) {
         })
       }
     }
-
     computeCss(element)
     
     top.children.push(element)
@@ -145,7 +145,7 @@ function emit(token) {
 
     currentTextNode = null
 
-  } else if (token.type == "endTag") {
+  } else if(token.type == "endTag") {
     if (top.tagName != token.tagName) {
       throw new Error("Tag start end doesn`t natch")
     } else {
@@ -156,7 +156,8 @@ function emit(token) {
     }
 
     currentTextNode = null
-  } else if (token.type === "endTag") {
+
+  } else if (token.type === "text") {
     if (currentTextNode == null) {
       currentTextNode = {
         type: "text",
