@@ -1,7 +1,7 @@
 /*
  * @Author: dalou
  * @Date: 2021-05-07 17:40:47
- * @LastEditTime: 2021-05-07 19:37:49
+ * @LastEditTime: 2021-05-08 18:09:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /jike-study/thirdWeek/layout.js
@@ -183,8 +183,93 @@ function layout(element){
     }
   }
   flexLine.mainSpace = mainSpace
-
   console.log(items)
+
+  if(style.flexWrap ==='nowrap' || isAutoMainSize){
+    flexLine.crossSpace = (style[crossSize] !== undefined) ? style[crossSize] : crossSpace
+  }else {
+    flexLine.crossSpace = crossSpace
+  }
+  
+  if(mainSpace < 0){
+
+    let scale = style[mainSign] / (style[mainSize] - mainSpace)
+    let currentMain = mainBase
+    for(let i = 0; i< items.length;i++){
+      let item = items[i]
+      let itemStyle = getStyle(item)
+
+      if(itemStyle.flex){
+        itemStyle[mainSize] = 0
+      }
+
+      itemStyle[mainSize] = itemStyle[mainSize] * scale
+
+      itemStyle[mainStart] = currentMain
+      itemStyle[mainEnd] = itemStyle[mainStart] + mainSign * itemStyle[mainSize]
+      currentMain = itemStyle[mainEnd]
+    }
+
+  }else {
+
+    flexLines.forEach(function(items){
+
+      let mainSpace = items.mainSpace
+      let flexTotal = 0
+      for(let i=0;i<items.length;i++){
+        let item = items[i]
+        let itemStyle = getStyle(item)
+        if((itemStyle.flex !== null) && (itemStyle.flex !== (void 0))){
+          flexTotal += itemStyle.flex
+          continue
+        }
+      }
+
+      if(flexTotal > 0){
+
+        let currentMain = mainBase
+        for(let i=0;i<items.length;i++){
+          let item = items[i]
+          let itemStyle = getStyle(item)
+
+          if(itemStyle.flex){
+            itemStyle[mainSize] = (mainSpace / flexTotal) * itemStyle.flex
+          }
+          itemStyle[mainStart] = currentMain
+          itemStyle[mainEnd] = itemStyle[mainStart] + mainSign * itemStyle[mainSize]
+          currentMain = itemStyle[mainEnd]
+        }
+      } else{
+
+        if(style.justifyContent === 'flex-start'){
+          let currentMain = mainBase
+          let step = 0
+        }
+        if(style.justifyContent === 'flex-end'){
+          let currentMain = mainSpace * mainSign + mainBase
+          let step = 0
+        }
+        if(style.justifyContent === 'center'){
+          let currentMain = mainSpace / 2 * mainSign + mainBase
+          let step = 0
+        }
+        if(style.justifyContent === 'space-between'){
+          let step = mainSpace / (items.length - 1) * mainSign
+          let currentMain = mainBase
+        }
+        if(style.justifyContent === 'space-around'){
+          let step = mainSpace / items.length * mainSign
+          let currentMain = step / 2 + mainBase
+        }
+        for( let i =0; i< items.length;i++){
+          let item = items[i]
+          itemStyle[mainStart] = currentMain
+          itemStyle[mainEnd] = itemStyle[mainStart] + mainSign * itemStyle[mainSize]
+          currentMain = itemStyle[mainSize] + step
+        }
+      }
+    })
+  }
 }
 
 module.exports = layout

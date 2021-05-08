@@ -1,7 +1,7 @@
 /*
  * @Author: dalou
  * @Date: 2021-04-20 15:10:59
- * @LastEditTime: 2021-04-26 11:05:39
+ * @LastEditTime: 2021-05-08 17:20:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /jike-study/oneWeek/parser.js
@@ -9,6 +9,8 @@
 const css = require('css')
 
 const EOF = Symbol("EOF")
+
+const layout = require("./layout.js")
 
 let currentToken = null
 
@@ -154,7 +156,7 @@ function emit(token) {
       }
       stack.pop()
     }
-
+    layout(top)
     currentTextNode = null
 
   } else if (token.type === "text") {
