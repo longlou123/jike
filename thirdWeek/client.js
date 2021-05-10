@@ -1,13 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2021-04-20 17:20:28
- * @LastEditTime: 2021-04-25 19:41:54
+ * @LastEditTime: 2021-05-10 18:36:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /jike-study/oneWeek/client1.js
  */
 const net = require("net");
 const parser = require("./parser.js")
+const images = require('images')
+const render = require('./render.js')
 
 
 class Request {
@@ -227,5 +229,8 @@ void async function () {
 
   let dom = parser.parseHTML(response.body)
 
-  console.log(JSON.stringify(dom, null, "    "))
+  // 浏览器绘制图片一定是通过viewport进行绘制，相当于视口
+  let viewport = images(800, 600);
+  render(viewport, dom);
+  viewport.save("viewport.jpg")
 }()

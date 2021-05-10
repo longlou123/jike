@@ -1,7 +1,7 @@
 /*
  * @Author: dalou
  * @Date: 2021-04-20 18:49:55
- * @LastEditTime: 2021-04-26 08:57:24
+ * @LastEditTime: 2021-05-10 18:22:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /jike-study/oneWeek/serve.js
@@ -20,24 +20,24 @@ const server = http.createServer((req, res) => {
 		res.setHeader('X-Foo', 'bar')
 		res.writeHead(200, { 'Content-Type': 'text/plain' })
 		res.end(
-`<html maaa=a >
+`<html maaa=a>
 <head>
-		<style>
+    <style>
 body div #myid{
-		width:100px;
-		background-color: #ff5000;
+    width: 100px;
+    background-color: #ff5000;
 }
 body div img{
-	width:30px;
-	background-color:#ff1111;
-}			
-		</style>
+    width: 30px;
+    background-color: #ff1111;
+}
+    </style>
 </head>
 <body>
-	<div>
-		<img id="myid"/>
-		<img />
-	</div>
+    <div>
+        <img id="myid"/>
+        <img />
+    </div>
 </body>
 </html>`)
 	})
